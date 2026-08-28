@@ -10,7 +10,7 @@ export default defineConfig({
         generatedRouteTree: "./.tanstack/routeTree.gen.ts",
       },
     }),
-    viteReact(),
+    viteReact({ compiler: true }),
   ],
   build: {
     rollupOptions: {
