@@ -22,14 +22,14 @@ function RootComponent() {
   );
 }
 
-function Document({ children }: Readonly<{ children: ReactNode }>) {
+function Document(props: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
       <body>
-        {children}
+        {props.children}
         <Scripts />
       </body>
     </html>

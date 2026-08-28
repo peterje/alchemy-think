@@ -1,16 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { nextCount, phaseLabel, type DemoPhase } from "../client/demo-state.ts";
 
 /** Landing page for the starter demo. */
 export const Route = createFileRoute("/")({
   ssr: false,
+  validateSearch: (search) => {
+    const parsed = Number(search.count);
+    return { count: Number.isInteger(parsed) && parsed >= 0 ? parsed : 0 };
+  },
   component: HomePage,
 });
 
 function HomePage() {
-  const [count, setCount] = useState(0);
-  const [phase, setPhase] = useState<DemoPhase>("idle");
+  const { count } = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const phase: DemoPhase = count > 0 ? "ready" : "idle";
 
   return (
     <main className="demo-app">
@@ -27,10 +31,7 @@ function HomePage() {
         <button
           type="button"
           className="primary"
-          onClick={() => {
-            setCount(nextCount(count));
-            setPhase("ready");
-          }}
+          onClick={() => navigate({ search: { count: nextCount(count) } })}
         >
           Increment
         </button>
